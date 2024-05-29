@@ -41,7 +41,7 @@ for item in customers.itertuples():
     if item[4][:8] in partidas:
         if chave not in items_dir:
             items_dir[chave] = {'Empresa':item[1], 'Cliente':str(item[2]),'Nome_Empresa': item[3],'Atribuição': item[4][:8], 'Moeda_da_transação':item[10],
-                                'Montante':montantet,'Desconto':montante,'Saldo em Aberto':montante-montantet,
+                                'Montante':montantet,'Desconto':montante,'Saldo em Aberto':round(montante-montantet,2),
                                 'Data':agoraData,'NumPartidas':1,'Valido (Colocar 0 para não rodar/ Colocar 1 para o robô rodar)':1, 'Partidas':[item[12]]}
         else:
             if item[12] not in items_dir[chave]['Partidas']:
@@ -52,16 +52,16 @@ for item in customers.itertuples():
             items_dir[chave]['NumPartidas'] += 1
 
 for item in items_dir:
-    desconto, montante, saldoEmAberto = items_dir[item]['Desconto'], items_dir[item]['Montante'], items_dir[item]['Saldo em Aberto'] 
+    desconto, montante, saldoEmAberto = items_dir[item]['Desconto'], items_dir[item]['Montante'], round(float(items_dir[item]['Saldo em Aberto']), 2)
     if desconto == 0.0:
         if montante > 0:
             items_dir[item]['Saldo em Aberto'] = -abs(montante)
         else:
             items_dir[item]['Saldo em Aberto'] = abs(montante)
     elif montante > desconto:
-        items_dir[item]['Saldo em Aberto'] = -abs(items_dir[item]['Saldo em Aberto'])
+        items_dir[item]['Saldo em Aberto'] = -abs(saldoEmAberto)
     elif desconto > montante:
-        items_dir[item]['Saldo em Aberto'] = abs(items_dir[item]['Saldo em Aberto'])
+        items_dir[item]['Saldo em Aberto'] = abs(saldoEmAberto)
 
 menores: list[dict] = []
 
