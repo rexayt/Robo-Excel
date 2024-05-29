@@ -34,8 +34,8 @@ items_dir = {} # Lista excel dos items a virarem excel
 item: tuple
 
 for item in customers.itertuples():
-    montante: float = abs(item[8])
-    montantet: float = abs(item[9])
+    montante: float = item[8]
+    montantet: float = item[9]
     chave: str = f'{item[4][:8]}'
     
     if item[4][:8] in partidas:
@@ -48,7 +48,7 @@ for item in customers.itertuples():
                 items_dir[chave]['Partidas'].append(item[12])
             items_dir[chave]['Montante'] += montantet
             items_dir[chave]['Desconto'] += montante
-            items_dir[chave].update({'Saldo em Aberto': f"{items_dir[chave]['Montante'] - items_dir[chave]['Desconto']:.2f}"},)
+            items_dir[chave].update({'Saldo em Aberto': f"{abs(items_dir[chave]['Montante']) - abs(items_dir[chave]['Desconto']):.2f}"},)
             items_dir[chave]['NumPartidas'] += 1
 
 for item in items_dir:
